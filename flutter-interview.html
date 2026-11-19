@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter 面试题大全</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-filter {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-filter:hover, .btn-filter.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-action {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-action:hover {
+            background: #5a6fd6;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tag-difficulty-easy { background: #d4edda; color: #155724; }
+        .tag-difficulty-medium { background: #fff3cd; color: #856404; }
+        .tag-difficulty-hard { background: #f8d7da; color: #721c24; }
+
+        .tag-category {
+            background: #e7f3ff;
+            color: #0066cc;
+        }
+
+        .question-title {
+            font-size: 1.3rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .toggle-answer {
+            background: none;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-answer:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .answer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #e2e8f0;
+            display: none;
+        }
+
+        .answer.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .answer p, .answer li {
+            line-height: 1.8;
+            color: #4a5568;
+        }
+
+        .answer ul, .answer ol {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .answer code {
+            background: #f6f8fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        .answer pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .answer pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            .question-title { font-size: 1.1rem; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .filter-group { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Flutter 面试题大全</h1>
+            <p>涵盖 Flutter 基础、进阶、架构、性能优化等各个方面</p>
+            <div class="stats">
+                <div class="stat"><span id="total-count">0</span> 道题目</div>
+                <div class="stat"><span id="visible-count">0</span> 道可见</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </header>
+
+        <div class="controls">
+            <div class="filter-group">
+                <button class="btn btn-filter active" data-filter="all">全部</button>
+                <button class="btn btn-filter" data-filter="easy">基础</button>
+                <button class="btn btn-filter" data-filter="medium">进阶</button>
+                <button class="btn btn-filter" data-filter="hard">高级</button>
+            </div>
+            <div class="filter-group">
+                <button class="btn btn-filter" data-category="all">全部分类</button>
+                <button class="btn btn-filter" data-category="basic">基础</button>
+                <button class="btn btn-filter" data-category="widget">Widget</button>
+                <button class="btn btn-filter" data-category="state">状态管理</button>
+                <button class="btn btn-filter" data-category="performance">性能</button>
+                <button class="btn btn-filter" data-category="architecture">架构</button>
+            </div>
+            <button class="btn btn-action" id="btn-toggle-all">展开全部答案</button>
+            <button class="btn btn-action" id="btn-random">随机一题</button>
+        </div>
+
+        <div id="questions-container"></div>
+
+        <footer>
+            <p>💡 提示：点击题目下方的按钮查看答案</p>
+        </footer>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                difficulty: 'easy',
+                category: 'basic',
+                title: '什么是 Flutter？它的主要特点是什么？',
+                answer: `
+                    <h4>Flutter 简介</h4>
+                    <p>Flutter 是 Google 开发的跨平台 UI 框架，用于构建高性能、高保真的移动、Web 和桌面应用。</p>
+                    <h4>主要特点</h4>
+                    <ul>
+                        <li><strong>跨平台</strong>：一套代码支持 iOS、Android、Web、Windows、macOS、Linux</li>
+                        <li><strong>热重载 (Hot Reload)</strong>：快速迭代开发，修改后立即看到效果</li>
+                        <li><strong>Widget 体系</strong>：一切皆 Widget，组合大于继承</li>
+                        <li><strong>自绘引擎</strong>：基于 Skia，保证跨平台一致性</li>
+                        <li><strong>高性能</strong>：直接编译为原生代码，60fps+ 性能</li>
+                        <li><strong>Dart 语言</strong>：JIT + AOT 编译，开发和生产体验俱佳</li>
+                    </ul>
+                `
+            },
+            {
+                id: 2,
+                difficulty: 'easy',
+                category: 'widget',
+                title: 'StatelessWidget 和 StatefulWidget 的区别是什么？',
+                answer: `
+                    <h4>核心区别</h4>
+                    <ul>
+                        <li><strong>StatelessWidget</strong>：无状态，属性不可变，一旦创建就不会改变</li>
+                        <li><strong>StatefulWidget</strong>：有状态，内部状态可以变化，通过 <code>setState()</code> 触发重建</li>
+                    </ul>
+                    <h4>StatelessWidget 适用场景</h4>
+                    <ul>
+                        <li>静态 UI 展示</li>
+                        <li>只依赖传入参数的组件</li>
+                        <li>例如：Text、Icon、ElevatedButton</li>
+                    </ul>
+                    <h4>StatefulWidget 适用场景</h4>
+                    <ul>
+                        <li>有交互的组件</li>
+                        <li>动画效果</li>
+                        <li>表单输入</li>
+                        <li>数据变化的列表</li>
+                    </ul>
+                `
+            },
+            {
+                id: 3,
+                difficulty: 'easy',
+                category: 'widget',
+                title: '什么是 Widget tree、Element tree 和 RenderObject tree？',
+                answer: `
+                    <h4>三棵树的概念</h4>
+                    <ul>
+                        <li><strong>Widget Tree</strong>：描述 UI 的配置信息，是不可变的。每次 <code>setState</code> 都会重建。</li>
+                        <li><strong>Element Tree</strong>：Widget 的实例化，管理 Widget 的生命周期，比较前后 Widget 差异。</li>
+                        <li><strong>RenderObject Tree</strong>：实际负责布局和绘制，负责屏幕上的像素渲染。</li>
+                    </ul>
+                    <h4>工作流程</h4>
+                    <ol>
+                        <li>开发者创建 Widget Tree</li>
+                        <li>Flutter 为每个 Widget 创建对应的 Element</li>
+                        <li>Element 管理对应的 RenderObject</li>
+                        <li>RenderObject 进行实际的布局和绘制</li>
+                    </ol>
+                `
+            },
+            {
+                id: 4,
+                difficulty: 'easy',
+                category: 'basic',
+                title: '什么是 Dart 的 null safety？如何使用？',
+                answer: `
+                    <h4>Null Safety 概念</h4>
+                    <p>Null Safety 是 Dart 2.12 引入的特性，帮助开发者避免空指针异常。</p>
+                    <h4>核心规则</h4>
+                    <ul>
+                        <li>类型默认非空：<code>String</code> 不能为 null</li>
+                        <li>可空类型用 <code>?</code>：<code>String?</code> 可以为 null</li>
+                        <li>非空断言：<code>!</code> 表示你确信变量不为 null</li>
+                        <li>空值感知操作符：<code>??</code>、<code>??=</code></li>
+                    </ul>
+                    <h4>代码示例</h4>
+                    <pre><code>// 非空变量
+String name = 'Flutter';
+
+// 可空变量
+String? maybeName;
+
+// 默认值
+String displayName = maybeName ?? 'Guest';
+
+// 安全访问
+maybeName?.length;
+
+// late 关键字：延迟初始化
+late String lazyName;
+</code></pre>
+                `
+            },
+            {
+                id: 5,
+                difficulty: 'easy',
+                category: 'widget',
+                title: 'Expanded 和 Flexible 的区别是什么？',
+                answer: `
+                    <h4>Expanded</h4>
+                    <ul>
+                        <li>继承自 Flexible</li>
+                        <li>强制子组件占据剩余空间</li>
+                        <li><code>fit</code> 固定为 <code>FlexFit.tight</code></li>
+                    </ul>
+                    <h4>Flexible</h4>
+                    <ul>
+                        <li>更灵活，可以设置 <code>fit</code> 属性</li>
+                        <li><code>FlexFit.loose</code>：子组件可以小于剩余空间</li>
+                        <li><code>FlexFit.tight</code>：子组件必须填满剩余空间</li>
+                    </ul>
+                    <h4>使用场景</h4>
+                    <pre><code>// Expanded：强制填满
+Row(children: [
+  Expanded(child: Container(color: Colors.red)),
+  Text('Hello'),
+])
+
+// Flexible：按需分配
+Row(children: [
+  Flexible(fit: FlexFit.loose, child: Text('Short')),
+  Flexible(flex: 2, child: Container(color: Colors.blue)),
+])
+</code></pre>
+                `
+            },
+            {
+                id: 6,
+                difficulty: 'medium',
+                category: 'state',
+                title: 'Flutter 中有哪些常见的状态管理方案？',
+                answer: `
+                    <h4>状态管理方案对比</h4>
+                    <ul>
+                        <li><strong>setState</strong>：Widget 内部状态，适合简单场景</li>
+                        <li><strong>InheritedWidget</strong>：跨 Widget 共享状态，Flutter 内置</li>
+                        <li><strong>Provider</strong>：基于 InheritedWidget 的封装，官方推荐</li>
+                        <li><strong>Riverpod</strong>：Provider 的改进版，编译时安全</li>
+                        <li><strong>Bloc</strong>：事件驱动，适合复杂业务</li>
+                        <li><strong>GetX</strong>：轻量级全功能方案</li>
+                        <li><strong>MobX</strong>：响应式状态管理</li>
+                    </ul>
+                    <h4>选择建议</h4>
+                    <ul>
+                        <li>简单应用：Provider</li>
+                        <li>中大型应用：Bloc 或 Riverpod</li>
+                        <li>快速开发：GetX</li>
+                    </ul>
+                `
+            },
+            {
+                id: 7,
+                difficulty: 'medium',
+                category: 'performance',
+                title: '如何优化 Flutter 应用的性能？',
+                answer: `
+                    <h4>优化策略</h4>
+                    <ul>
+                        <li><strong>减少重建</strong>：
+                            <ul>
+                                <li>使用 <code>const</code> 构造函数</li>
+                                <li>提取子 Widget 为独立组件</li>
+                                <li>使用 <code>Selector</code> (Provider) 或 <code>BlocBuilder</code> 的 <code>buildWhen</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>列表优化</strong>：
+                            <ul>
+                                <li>使用 <code>ListView.builder</code> 而非 <code>ListView</code></li>
+                                <li>提供 <code>itemExtent</code> 或 <code>prototypeItem</code></li>
+                                <li>使用 <code>AutomaticKeepAliveClientMixin</code> 保持状态</li>
+                            </ul>
+                        </li>
+                        <li><strong>图片优化</strong>：
+                            <ul>
+                                <li>使用适当尺寸的图片</li>
+                                <li>使用 <code>cacheHeight</code>/<code>cacheWidth</code></li>
+                                <li>考虑 <code>cached_network_image</code> 库</li>
+                            </ul>
+                        </li>
+                        <li><strong>延迟加载</strong>：
+                            <ul>
+                                <li>使用 <code>deferred as</code> 按需加载库</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            },
+            {
+                id: 8,
+                difficulty: 'medium',
+                category: 'widget',
+                title: '什么是 Key？GlobalKey 和 LocalKey 的区别？',
+                answer: `
+                    <h4>Key 的作用</h4>
+                    <p>Key 用于在 Widget Tree 中唯一标识 Widget，帮助 Flutter 在重建时正确匹配 Element。</p>
+                    <h4>Key 的类型</h4>
+                    <ul>
+                        <li><strong>LocalKey</strong>：在同级 Widget 中唯一即可
+                            <ul>
+                                <li><code>ValueKey</code>：基于值</li>
+                                <li><code>ObjectKey</code>：基于对象</li>
+                                <li><code>UniqueKey</code>：每次都是唯一的</li>
+                            </ul>
+                        </li>
+                        <li><strong>GlobalKey</strong>：全局唯一，可以访问对应的 Element 和 State
+                            <ul>
+                                <li>访问其他 Widget 的状态</li>
+                                <li>表单验证</li>
+                                <li>获取 Widget 的尺寸和位置</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h4>使用场景</h4>
+                    <pre><code>// 列表项保持状态
+ListView(
+  children: [
+    for (final item in items)
+      TodoItem(key: ValueKey(item.id), todo: item),
+  ],
+)
+
+// GlobalKey 访问状态
+final _formKey = GlobalKey<FormState>();
+_formKey.currentState?.validate();
+</code></pre>
+                `
+            },
+            {
+                id: 9,
+                difficulty: 'medium',
+                category: 'architecture',
+                title: '解释什么是 BLoC 模式？',
+                answer: `
+                    <h4>BLoC 概念</h4>
+                    <p>BLoC (Business Logic Component) 是一种将业务逻辑与 UI 分离的设计模式。</p>
+                    <h4>核心概念</h4>
+                    <ul>
+                        <li><strong>Event</strong>：用户操作或其他事件输入</li>
+                        <li><strong>State</strong>：UI 状态输出</li>
+                        <li><strong>Stream</strong>：连接 Event 和 State 的桥梁</li>
+                    </ul>
+                    <h4>工作流程</h4>
+                    <pre><code>UI ──Event──> BLoC ──State──> UI
+</code></pre>
+                    <h4>代码示例</h4>
+                    <pre><code>// Event
+abstract class CounterEvent {}
+class Increment extends CounterEvent {}
+
+// BLoC
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<Increment>((event, emit) => emit(state + 1));
+  }
+}
+
+// UI
+BlocBuilder<CounterBloc, int>(
+  builder: (context, count) => Text('$count'),
+)
+</code></pre>
+                `
+            },
+            {
+                id: 10,
+                difficulty: 'medium',
+                category: 'widget',
+                title: 'CustomPaint 和 CustomSingleChildLayout 的使用场景？',
+                answer: `
+                    <h4>CustomPaint</h4>
+                    <p>用于绘制自定义图形和动画。</p>
+                    <ul>
+                        <li>自定义图表</li>
+                        <li>特殊形状</li>
+                        <li>复杂动画</li>
+                    </ul>
+                    <h4>CustomSingleChildLayout</h4>
+                    <p>用于自定义子 Widget 的布局位置。</p>
+                    <ul>
+                        <li>特殊布局算法</li>
+                        <li>子组件位置计算</li>
+                    </ul>
+                    <h4>CustomPaint 示例</h4>
+                    <pre><code>CustomPaint(
+  painter: MyPainter(),
+  child: ...,
+)
+
+class MyPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.blue;
+    canvas.drawCircle(size.center(Offset.zero), 50, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+</code></pre>
+                `
+            },
+            {
+                id: 11,
+                difficulty: 'hard',
+                category: 'performance',
+                title: 'Flutter 的渲染机制是怎样的？什么是三棵树？',
+                answer: `
+                    <h4>渲染流水线</h4>
+                    <ol>
+                        <li><strong>Build</strong>：构建 Widget Tree</li>
+                        <li><strong>Layout</strong>：计算每个 RenderObject 的尺寸和位置</li>
+                        <li><strong>Paint</strong>：绘制到 Layer</li>
+                        <li><strong>Composite</strong>：合成所有 Layer 并提交到 GPU</li>
+                    </ol>
+                    <h4>三棵树详解</h4>
+                    <ul>
+                        <li><strong>Widget</strong>：配置信息，不可变，轻量级</li>
+                        <li><strong>Element</strong>：Widget 的实例，管理生命周期，可变</li>
+                        <li><strong>RenderObject</strong>：实际布局和绘制，最重量级</li>
+                    </ul>
+                    <h4>优化关键点</h4>
+                    <ul>
+                        <li>Build 阶段：尽量轻量，避免耗时计算</li>
+                        <li>Layout 阶段：使用 <code>RepaintBoundary</code> 隔离重绘</li>
+                        <li>Paint 阶段：合理使用 <code>shouldRepaint</code></li>
+                    </ul>
+                `
+            },
+            {
+                id: 12,
+                difficulty: 'hard',
+                category: 'architecture',
+                title: '如何设计 Flutter 应用的架构？',
+                answer: `
+                    <h4>常见架构模式</h4>
+                    <ul>
+                        <li><strong>Clean Architecture</strong>：
+                            <ul>
+                                <li>Entities：业务实体</li>
+                                <li>Use Cases：业务逻辑</li>
+                                <li>Interface Adapters：数据转换</li>
+                                <li>Frameworks & Drivers：外部依赖</li>
+                            </ul>
+                        </li>
+                        <li><strong>MVVM</strong>：Model-View-ViewModel</li>
+                        <li><strong>Redux</strong>：单一数据源，单向数据流</li>
+                    </ul>
+                    <h4>推荐项目结构</h4>
+                    <pre><code>lib/
+  ├── core/
+  │   ├── error/
+  │   ├── usecases/
+  │   └── utils/
+  ├── features/
+  │   └── feature_name/
+  │       ├── data/
+  │       │   ├── datasources/
+  │       │   ├── models/
+  │       │   └── repositories/
+  │       ├── domain/
+  │       │   ├── entities/
+  │       │   ├── repositories/
+  │       │   └── usecases/
+  │       └── presentation/
+  │           ├── bloc/
+  │           ├── pages/
+  │           └── widgets/
+  └── injection_container.dart
+</code></pre>
+                `
+            },
+            {
+                id: 13,
+                difficulty: 'hard',
+                category: 'performance',
+                title: '什么是 RepaintBoundary？如何优化重绘？',
+                answer: `
+                    <h4>RepaintBoundary 作用</h4>
+                    <p>隔离重绘区域，当一个区域需要重绘时，不会影响其他区域。</p>
+                    <h4>使用场景</h4>
+                    <ul>
+                        <li>动画区域：动画小部件独立重绘</li>
+                        <li>独立更新的 UI：如进度条、计时器</li>
+                        <li>列表项：每个列表项独立重绘</li>
+                    </ul>
+                    <h4>代码示例</h4>
+                    <pre><code>Column(
+  children: [
+    Expanded(child: StaticContent()),  // 不常更新
+    RepaintBoundary(
+      child: AnimatedWidget(),        // 频繁更新
+    ),
+  ],
+)
+</code></pre>
+                    <h4>调试重绘</h4>
+                    <pre><code>// 在 main 中开启
+void main() {
+  debugRepaintRainbowEnabled = true;
+  runApp(MyApp());
+}
+</code></pre>
+                `
+            },
+            {
+                id: 14,
+                difficulty: 'hard',
+                category: 'widget',
+                title: '如何创建自己的 RenderObject？',
+                answer: `
+                    <h4>RenderObject 创建步骤</h4>
+                    <ol>
+                        <li>继承 <code>RenderBox</code> 或 <code>RenderSliver</code></li>
+                        <li>实现 <code>performLayout</code> 方法</li>
+                        <li>实现 <code>paint</code> 方法</li>
+                        <li>创建对应的 Widget（继承 <code>LeafRenderObjectWidget</code> 等）</li>
+                        <li>实现 <code>createRenderObject</code> 和 <code>updateRenderObject</code></li>
+                    </ol>
+                    <h4>代码示例</h4>
+                    <pre><code>// Widget
+class CustomBox extends LeafRenderObjectWidget {
+  final Color color;
+
+  const CustomBox({super.key, required this.color});
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return RenderCustomBox(color: color);
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, RenderCustomBox renderObject) {
+    renderObject.color = color;
+  }
+}
+
+// RenderObject
+class RenderCustomBox extends RenderBox {
+  RenderCustomBox({required Color color}) : _color = color;
+
+  Color _color;
+  set color(Color value) {
+    if (_color == value) return;
+    _color = value;
+    markNeedsPaint();
+  }
+
+  @override
+  void performLayout() {
+    size = constraints.biggest;
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    final paint = Paint()..color = _color;
+    context.canvas.drawRect(offset & size, paint);
+  }
+}
+</code></pre>
+                `
+            },
+            {
+                id: 15,
+                difficulty: 'hard',
+                category: 'architecture',
+                title: '如何实现 Flutter 插件开发？',
+                answer: `
+                    <h4>插件开发流程</h4>
+                    <ol>
+                        <li>创建插件项目：<code>flutter create --template=plugin my_plugin</code></li>
+                        <li>定义 Dart API</li>
+                        <li>实现平台特定代码</li>
+                        <li>使用 <code>MethodChannel</code> 通信</li>
+                    </ol>
+                    <h4>代码结构</h4>
+                    <pre><code>// lib/my_plugin.dart
+class MyPlugin {
+  static const MethodChannel _channel = MethodChannel('my_plugin');
+
+  static Future<String?> get platformVersion async {
+    final String? version = await _channel.invokeMethod('getPlatformVersion');
+    return version;
+  }
+}
+
+// Android (Kotlin)
+class MyPlugin: FlutterPlugin, MethodCallHandler {
+  override fun onMethodCall(call: MethodCall, result: Result) {
+    if (call.method == "getPlatformVersion") {
+      result.success("Android " + android.os.Build.VERSION.RELEASE)
+    } else {
+      result.notImplemented()
+    }
+  }
+}
+
+// iOS (Swift)
+public class SwiftMyPlugin: NSObject, FlutterPlugin {
+  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    if call.method == "getPlatformVersion" {
+      result.success("iOS " + UIDevice.current.systemVersion)
+    } else {
+      result(FlutterMethodNotImplemented)
+    }
+  }
+}
+</code></pre>
+                `
+            },
+            {
+                id: 16,
+                difficulty: 'medium',
+                category: 'basic',
+                title: 'Future 和 async/await 怎么用？',
+                answer: `
+                    <h4>Future 概念</h4>
+                    <p>Future 表示异步操作的结果，有两种状态：未完成和已完成。</p>
+                    <h4>基本用法</h4>
+                    <pre><code>// Future API
+Future<String> fetchData() {
+  return Future.delayed(Duration(seconds: 1), () => 'Data loaded');
+}
+
+fetchData()
+  .then((data) => print(data))
+  .catchError((error) => print(error));
+
+// async/await
+Future<void> loadData() async {
+  try {
+    final data = await fetchData();
+    print(data);
+  } catch (e) {
+    print(e);
+  }
+}
+
+// 等待多个 Future
+Future.wait([fetchData1(), fetchData2()]);
+</code></pre>
+                    <h4>UI 中使用</h4>
+                    <pre><code>FutureBuilder<String>(
+  future: fetchData(),
+  builder: (context, snapshot) {
+    if (snapshot.hasError) return Text('Error');
+    if (snapshot.hasData) return Text(snapshot.data!);
+    return CircularProgressIndicator();
+  },
+)
+</code></pre>
+                `
+            },
+            {
+                id: 17,
+                difficulty: 'medium',
+                category: 'state',
+                title: '解释 Provider 的工作原理？',
+                answer: `
+                    <h4>Provider 核心概念</h4>
+                    <ul>
+                        <li>基于 <code>InheritedWidget</code> 的封装</li>
+                        <li>提供状态的访问和监听</li>
+                        <li>支持选择性重建</li>
+                    </ul>
+                    <h4>基本用法</h4>
+                    <pre><code>// 创建 Model
+class Counter extends ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+}
+
+// 提供状态
+ChangeNotifierProvider(
+  create: (_) => Counter(),
+  child: MyApp(),
+)
+
+// 消费状态
+// 方式 1: watch (会重建)
+final counter = context.watch<Counter>();
+
+// 方式 2: read (不会重建，一次性读取)
+context.read<Counter>().increment();
+
+// 方式 3: Selector (选择性重建)
+Selector<Counter, int>(
+  selector: (context, counter) => counter.count,
+  builder: (context, count, child) => Text('$count'),
+)
+</code></pre>
+                `
+            },
+            {
+                id: 18,
+                difficulty: 'hard',
+                category: 'performance',
+                title: 'Flutter 内存优化策略有哪些？',
+                answer: `
+                    <h4>内存优化关键点</h4>
+                    <ul>
+                        <li><strong>图片管理</strong>：
+                            <ul>
+                                <li>使用 <code>cacheHeight</code>/<code>cacheWidth</code> 缓存缩放过的图片</li>
+                                <li>及时释放不需要的图片资源</li>
+                                <li>考虑使用 <code>Image.memory</code> 的复用</li>
+                            </ul>
+                        </li>
+                        <li><strong>避免内存泄漏</strong>：
+                            <ul>
+                                <li>AnimationController 需要 dispose</li>
+                                <li>StreamSubscription 需要 cancel</li>
+                                <li>FocusNode、TextEditingController 需要 dispose</li>
+                            </ul>
+                        </li>
+                        <li><strong>列表优化</strong>：
+                            <ul>
+                                <li>ListView.builder 懒加载</li>
+                                <li>避免在 build 中创建对象</li>
+                                <li>使用 const 构造函数</li>
+                            </ul>
+                        </li>
+                        <li><strong>数据结构选择</strong>：
+                            <ul>
+                                <li>合理使用 Map/List</li>
+                                <li>大数据分页加载</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h4>调试工具</h4>
+                    <ul>
+                        <li>DevTools Memory View</li>
+                        <li>Heap Snapshot</li>
+                        <li>Allocation Tracking</li>
+                    </ul>
+                `
+            },
+            {
+                id: 19,
+                difficulty: 'medium',
+                category: 'widget',
+                title: 'ListView 和 CustomScrollView 的区别？',
+                answer: `
+                    <h4>ListView</h4>
+                    <ul>
+                        <li>单一滚动列表</li>
+                        <li>使用简单</li>
+                        <li>常用构造函数：<code>ListView</code>、<code>ListView.builder</code>、<code>ListView.separated</code></li>
+                    </ul>
+                    <h4>CustomScrollView</h4>
+                    <ul>
+                        <li>支持多种 Sliver 组合</li>
+                        <li>可以实现复杂滚动效果</li>
+                        <li>SliverAppBar、SliverList、SliverGrid、SliverPadding 等</li>
+                    </ul>
+                    <h4>CustomScrollView 示例</h4>
+                    <pre><code>CustomScrollView(
+  slivers: [
+    SliverAppBar(
+      title: Text('Title'),
+      expandedHeight: 200,
+      flexibleSpace: FlexibleSpaceBar(...),
+    ),
+    SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(...),
+      delegate: SliverChildBuilderDelegate(...),
+    ),
+    SliverList(
+      delegate: SliverChildBuilderDelegate(...),
+    ),
+  ],
+)
+</code></pre>
+                `
+            },
+            {
+                id: 20,
+                difficulty: 'hard',
+                category: 'architecture',
+                title: 'Flutter 测试策略和最佳实践？',
+                answer: `
+                    <h4>测试金字塔</h4>
+                    <ul>
+                        <li><strong>单元测试</strong>：测试单个函数或类</li>
+                        <li><strong>Widget 测试</strong>：测试单个 Widget</li>
+                        <li><strong>集成测试</strong>：测试完整应用流程</li>
+                    </ul>
+                    <h4>代码示例</h4>
+                    <pre><code>// 单元测试
+import 'package:test/test.dart';
+
+void main() {
+  test('Counter increments', () {
+    final counter = Counter();
+    counter.increment();
+    expect(counter.value, 1);
+  });
+}
+
+// Widget 测试
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  testWidgets('Counter widget increments', (tester) async {
+    await tester.pumpWidget(MaterialApp(home: CounterPage()));
+
+    expect(find.text('0'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    expect(find.text('1'), findsOneWidget);
+  });
+}
+
+// Mock 示例 (mocktail)
+when(() => repository.fetchData()).thenAnswer((_) async => 'Mock Data');
+</code></pre>
+                `
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentCategory = 'all';
+        let allExpanded = false;
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            const filteredQuestions = questions.filter(q => {
+                const difficultyMatch = currentFilter === 'all' || q.difficulty === currentFilter;
+                const categoryMatch = currentCategory === 'all' || q.category === currentCategory;
+                return difficultyMatch && categoryMatch;
+            });
+
+            document.getElementById('total-count').textContent = questions.length;
+            document.getElementById('visible-count').textContent = filteredQuestions.length;
+
+            const answeredCount = document.querySelectorAll('.answer.show').length;
+            document.getElementById('progress-fill').style.width =
+                (answeredCount / questions.length * 100) + '%';
+
+            filteredQuestions.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.dataset.id = q.id;
+
+                const difficultyText = {
+                    'easy': '基础',
+                    'medium': '进阶',
+                    'hard': '高级'
+                }[q.difficulty];
+
+                const categoryText = {
+                    'basic': '基础',
+                    'widget': 'Widget',
+                    'state': '状态管理',
+                    'performance': '性能',
+                    'architecture': '架构'
+                }[q.category];
+
+                card.innerHTML = `
+                    <div class="question-header">
+                        <div class="tags">
+                            <span class="tag tag-difficulty-${q.difficulty}">${difficultyText}</span>
+                            <span class="tag tag-category">${categoryText}</span>
+                        </div>
+                        <span style="color: #999; font-size: 0.9rem;">#${q.id}</span>
+                    </div>
+                    <h3 class="question-title">${q.title}</h3>
+                    <button class="toggle-answer" data-id="${q.id}">查看答案</button>
+                    <div class="answer" id="answer-${q.id}">${q.answer}</div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Re-attach event listeners
+            document.querySelectorAll('.toggle-answer').forEach(btn => {
+                btn.addEventListener('click', toggleAnswer);
+            });
+        }
+
+        function toggleAnswer(e) {
+            const id = e.target.dataset.id;
+            const answer = document.getElementById(`answer-${id}`);
+            const btn = e.target;
+
+            if (answer.classList.contains('show')) {
+                answer.classList.remove('show');
+                btn.textContent = '查看答案';
+            } else {
+                answer.classList.add('show');
+                btn.textContent = '隐藏答案';
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answeredCount = document.querySelectorAll('.answer.show').length;
+            document.getElementById('progress-fill').style.width =
+                (answeredCount / questions.length * 100) + '%';
+        }
+
+        function toggleAll() {
+            allExpanded = !allExpanded;
+            document.querySelectorAll('.answer').forEach(answer => {
+                if (allExpanded) {
+                    answer.classList.add('show');
+                } else {
+                    answer.classList.remove('show');
+                }
+            });
+            document.querySelectorAll('.toggle-answer').forEach(btn => {
+                btn.textContent = allExpanded ? '隐藏答案' : '查看答案';
+            });
+            document.getElementById('btn-toggle-all').textContent =
+                allExpanded ? '收起全部答案' : '展开全部答案';
+            updateProgress();
+        }
+
+        function randomQuestion() {
+            const randomId = questions[Math.floor(Math.random() * questions.length)].id;
+            const card = document.querySelector(`[data-id="${randomId}"]`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.style.boxShadow = '0 10px 40px rgba(102, 126, 234, 0.4)';
+                setTimeout(() => {
+                    card.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
+                }, 2000);
+            }
+        }
+
+        // Event listeners
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                renderQuestions();
+            });
+        });
+
+        document.querySelectorAll('[data-category]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('[data-category]').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentCategory = e.target.dataset.category;
+                renderQuestions();
+            });
+        });
+
+        document.getElementById('btn-toggle-all').addEventListener('click', toggleAll);
+        document.getElementById('btn-random').addEventListener('click', randomQuestion);
+
+        // Initial render
+        renderQuestions();
+    </script>
+</body>
+</html>
